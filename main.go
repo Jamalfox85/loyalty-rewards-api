@@ -20,8 +20,8 @@ func main() {
 	}))
 
 	// Test Route
-	r.GET("/test", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{"message": "CORS is working!"})
+	r.GET("/health", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"message": "Service is running!"})
 	})
 	r.GET("/auth", func(c *gin.Context) {
 		// c.JSON(http.StatusOK, gin.H{"message": "CORS is working!"})
@@ -39,7 +39,7 @@ func main() {
 
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8080" // Default port if not set
+		port = "8081" // Default port if not set
 	}
-	r.Run(":" + port) // Start server
+	r.Run("0.0.0.0:" + port) // Start server
 }
