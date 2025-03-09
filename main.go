@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"os"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -12,7 +13,7 @@ func main() {
 
 	// Enable CORS
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:5173"}, // Allow only your frontend origin
+		AllowOrigins:     []string{"https://api.bigcommerce.com"}, // Allow only your frontend origin
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Content-Type", "Authorization"},
 		AllowCredentials: true,
@@ -22,8 +23,9 @@ func main() {
 	r.GET("/test", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"message": "CORS is working!"})
 	})
-	r.GET("/oauth", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{"message": "CORS is working!"})
+	r.GET("/auth", func(c *gin.Context) {
+		// c.JSON(http.StatusOK, gin.H{"message": "CORS is working!"})
+		c.Redirect(http.StatusFound, "https://supposedly-simple-hamster.ngrok-free.app")
 	})
 	r.GET("/load", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"message": "CORS is working!"})
@@ -35,5 +37,9 @@ func main() {
 		c.JSON(http.StatusOK, gin.H{"message": "CORS is working!"})
 	})
 
-	r.Run(":8080") // Start server
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080" // Default port if not set
+	}
+	r.Run(":" + port) // Start server
 }
